@@ -2,6 +2,14 @@ import tensorflow as tf
 import random
 import numpy as np
 from keras.datasets.cifar10 import load_data
+import matplotlib as plt
+def imshow(img):
+    img = img / 2 + 0.5     # unnormalize
+    npimg = img.numpy()
+    plt.imshow(np.transpose(npimg, (1, 2, 0)))
+
+
+
 def next_batch(num, data, labels):
   '''
   `num` 개수 만큼의 랜덤한 샘플들과 레이블들을 리턴합니다.
@@ -86,3 +94,7 @@ with tf.Session() as sess:
         test_accuracy = test_accuracy + accuracy.eval(feed_dict={X: test_batch[0], Y: test_batch[1], keep_prob: 1.0})
     test_accuracy = test_accuracy / 10;
     print("테스트 데이터 정확도: %f" % test_accuracy)
+    img=x_test[0]
+    imshow(img)
+    print("Label: ",sess.run(tf.argmax(y_test[0],1)))
+    print("Prediction: ",sess.run(tf.argmax(hypothesis,1),feed_dict={X:x_test[0],Y:y_test[0]}))
